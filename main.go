@@ -82,6 +82,9 @@ ORDER by created_date_time ASC
 */
 func getOldestMediaUri(recordingId string) string {
 	var PG_PLATFORM = os.Getenv("PG_PROD_CONN")
+        if len(PG_PLATFORM)==0 {
+           log.Fatalf("Please definte the PG_PROD_CONN environment variable")
+        }
 	query := fmt.Sprintf("SELECT uri, created_date_time FROM recording.recording_asset WHERE recording_id='%s' AND type='media' ORDER by created_date_time ASC", recordingId)
 	log.Printf("getting uri for %s\nQuery=%s\n", recordingId, query)
 	db, err := sqlx.Connect("postgres", PG_PLATFORM)
